@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/waa_project?useSSL=false&serverTimezone=UTC
+    username: root
+    password: Collina1!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    # delay data.sql after Hibernate create tbl
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: never
+
+logging:
+  level:
+    root: INFO
+#    org.springframework.security: DEBUG
+#    org.springframework.web: TRACE
+#    edu.miu.cs.cs544.controller: DEBUG
+
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
