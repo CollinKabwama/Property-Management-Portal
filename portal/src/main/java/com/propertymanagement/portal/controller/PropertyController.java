@@ -10,12 +10,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/properties")
 public class PropertyController {
 
     @Autowired
     PropertyService propertyService;
+
+    @GetMapping("/")
+    public List<Property> findAllProperties(){
+        return propertyService.findAllProperties();
+    }
 
     @GetMapping("/{id}")
     public Property getPropertyById(@PathVariable("id") long id) {

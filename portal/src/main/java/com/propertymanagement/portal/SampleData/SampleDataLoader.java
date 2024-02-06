@@ -17,7 +17,7 @@ import java.util.List;
 public class SampleDataLoader implements CommandLineRunner {
 
     @Autowired
-     PropertyRespository propertyRepository;
+    PropertyRespository propertyRepository;
 
 
     @Override
@@ -27,12 +27,12 @@ public class SampleDataLoader implements CommandLineRunner {
     }
 
     private void insertSampleData() {
-//        Property property1 = new Property(1L, 150000.0, ListingType.SALE, 2, 1.5, PropertyType.APARTMENT, new Address("SampleCity", "SampleState"));
-//        Property property2 = new Property(2L, 200000.0, ListingType.RENT, 3, 2.0, PropertyType.HOUSE, new Address("SampleCity", "SampleState"));
-//        Property property3 = new Property(3L, 120000.0, ListingType.SALE, 2, 1.0, PropertyType.CONDO, new Address("AnotherCity", "AnotherState"));
-//        Property property4 = new Property(4L, 180000.0, ListingType.RENT, 3, 2.5, PropertyType.APARTMENT, new Address("AnotherCity", "AnotherState"));
-//
-//        propertyRepository.saveAll(List.of(property1, property2, property3, property4));
+        Property property1 = PropertyDummyData.createSampleProperty1();
+        Property property2 = PropertyDummyData.createSampleProperty2();
+        Property property3 = PropertyDummyData.createSampleProperty3();
+        // Add more properties if needed
+
+        propertyRepository.saveAll(List.of(property1, property2, property3));
     }
 }
 
