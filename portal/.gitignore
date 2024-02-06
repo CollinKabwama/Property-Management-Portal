@@ -18,6 +18,9 @@ target/
 *.iws
 *.iml
 *.ipr
+#add a so that you ignore the yaml file in resources
+!**/src/main/**/resources/application.yml
+
 
 ### NetBeans ###
 /nbproject/private/
