@@ -25,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Table(name = "users")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -35,13 +35,14 @@ public class User implements UserDetails {
     private String lastname;
     private String email;
     private String password;
-    private boolean isEnabled;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    private String phoneNumber;
 
     /*@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
