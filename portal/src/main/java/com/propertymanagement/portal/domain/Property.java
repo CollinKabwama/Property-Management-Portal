@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,8 +18,8 @@ public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
 
-    private String title;
     private String description;
     private double price;
 
@@ -26,9 +27,15 @@ public class Property {
     private PropertyStatus status;
 
     @Enumerated(EnumType.STRING)
-    private ListingType type;
+    private ListingType listingType;
 
-    private int numberOfRooms;
+    @Enumerated(EnumType.STRING)
+    private PropertyType propertyType;
+
+
+    private int bathRooms;
+    private int bedRooms;
+
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
@@ -40,9 +47,7 @@ public class Property {
     private Address address;
 
     private String imageUrl;
-
-    private double numberOfbathrooms;
-
+    private LocalDate constructionDate;
     public void addOffer(Offer offer){
         offers.add(offer);
     }
