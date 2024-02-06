@@ -1,9 +1,9 @@
 package com.propertymanagement.portal.repository;
 
-import com.propertymanagement.portal.domain.Customer;
+import com.propertymanagement.portal.domain.Property;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
+public interface PropertyRepository extends JpaRepository<Property, Long> {
 }

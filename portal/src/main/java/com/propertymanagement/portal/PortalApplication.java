@@ -16,8 +16,8 @@ public class PortalApplication {
 		SpringApplication.run(PortalApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner commandLineRunner(
+	/*@Bean
+	/*public CommandLineRunner commandLineRunner(
 			AuthenticationService service
 	) {
 		return args -> {
@@ -40,5 +40,5 @@ public class PortalApplication {
 			System.out.println("Customer token: " + service.registerCustomer(customer).getAccessToken());
 
 		};
-	}
+	}*/
 }
