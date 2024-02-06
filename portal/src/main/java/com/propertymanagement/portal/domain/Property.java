@@ -29,7 +29,6 @@ public class Property {
     private ListingType type;
 
     private int numberOfRooms;
-
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
@@ -41,6 +40,9 @@ public class Property {
     private Address address;
 
     private String imageUrl;
+
+    private double numberOfbathrooms;
+
     public void addOffer(Offer offer){
         offers.add(offer);
     }
