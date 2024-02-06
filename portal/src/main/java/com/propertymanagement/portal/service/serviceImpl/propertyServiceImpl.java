@@ -105,14 +105,13 @@ public class propertyServiceImpl implements PropertyService {
     public Property getPropertyById(long id) {
         return propertyRespository.findById(id).get();
     }
+    @Override
+    public void saveProperty(Property property) {
+        propertyRespository.save(property);
+    }
 
     public List<Property> findAllProperties() {
         return propertyRespository.findAll();
-    }
-
-    @Override
-    public void addProperty(long id) {
-        //this impl needs some stuff from ownerRepo, should i form the class?
     }
 
 }

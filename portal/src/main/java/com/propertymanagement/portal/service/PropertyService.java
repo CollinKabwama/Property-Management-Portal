@@ -9,10 +9,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface PropertyService {
+    public void saveProperty(Property property);
 
     Property getPropertyById(long id);
-
-    public void addProperty(long id);
 
     List<Property> findAllProperties();
 

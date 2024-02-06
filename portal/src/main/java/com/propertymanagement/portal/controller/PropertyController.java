@@ -18,11 +18,15 @@ public class PropertyController {
 
     @Autowired
     PropertyService propertyService;
+    public void saveProperty(Property property){
+        propertyService.saveProperty(property);
+    }
 
     @GetMapping("/")
     public List<Property> findAllProperties(){
         return propertyService.findAllProperties();
     }
+
 
     @GetMapping("/{id}")
     public Property getPropertyById(@PathVariable("id") long id) {

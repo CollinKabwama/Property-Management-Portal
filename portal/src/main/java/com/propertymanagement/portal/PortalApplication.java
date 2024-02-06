@@ -7,7 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import static com.propertymanagement.portal.user.Role.*;
+import static com.propertymanagement.portal.user.Role.CUSTOMER;
+import static com.propertymanagement.portal.user.Role.OWNER;
 
 @SpringBootApplication
 public class PortalApplication {
