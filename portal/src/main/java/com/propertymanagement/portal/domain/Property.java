@@ -1,5 +1,6 @@
 package com.propertymanagement.portal.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.propertymanagement.portal.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,16 +37,26 @@ public class Property {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(mappedBy = "property")
+    @JsonManagedReference // Include offers in serialization
+    @OneToMany(mappedBy = "property", cascade = CascadeType.PERSIST)
     private Set<Offer> offers = new HashSet<>();
 
     @ManyToOne
     private Address address;
 
     private String imageUrl;
-    private LocalDate constructionDate; // Change to a string format
+
+    private LocalDate constructionDate;
+
+
+
     public void addOffer(Offer offer){
         offers.add(offer);
+
+
+    }
+    public void removeOffer(Offer offer){
+        offers.remove(offer);
     }
 
 
