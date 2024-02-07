@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/waa_project?useSSL=false&serverTimezone=UTC
     username: root
-    password: Collina1!
+    password: Kanyoga@123
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
