@@ -29,6 +29,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+
 public class PropertyServiceImpl implements PropertyService {
     @Autowired
     PropertyRespository propertyRespository;
