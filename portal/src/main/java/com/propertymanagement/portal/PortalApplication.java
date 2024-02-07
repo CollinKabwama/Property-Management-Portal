@@ -52,9 +52,9 @@ public class PortalApplication {
 			System.out.println("Customer token: " + service.registerCustomer(customer).getAccessToken());
 		};
 	}*/
-	@Bean
+	/*@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
-	}
+	}*/
 
 }
