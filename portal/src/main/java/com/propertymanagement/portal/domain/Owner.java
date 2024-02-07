@@ -25,6 +25,7 @@ public class Owner {
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Property> properties = new HashSet<>();
 
+    private boolean isEnabled;
     public void addProperty(Property property){
         properties.add(property);
     }

@@ -138,18 +138,18 @@ public class PropertyServiceImpl implements PropertyService {
         if (property.getStatus()== PropertyStatus.CONTINGENT){
             throw new InvalidInputException("Property is in Contingent status, you cannot make an offer for this property");
         }
-        Offer offer = new Offer();
-        System.out.println("Customer: " + customer);
-        System.out.println("Authentication: " + authentication.getName());
 
-        //Check if the user already made an offer for the property
-        if (customer.getOffers().stream().anyMatch(o -> o.getProperty().getId().equals(propertyId))) {
+        //Check if the user already made an offer for the property and is either pemding or accepted
+        if (property.getOffers().stream().anyMatch(o -> o.getCustomer().getId().equals(customer.getId()) && (o.getOfferStatus().equals(OfferStatus.PENDING) || o.getOfferStatus().equals(OfferStatus.ACCEPTED)))) {
             throw new InvalidInputException("You have already made an offer for this property");
         }
+
+        Offer offer = new Offer();
 
         offer.setOfferAmount(makeOfferRequest.getOfferAmount());
         offer.setOfferDate(LocalDateTime.now());
         offer.setOfferStatus(OfferStatus.PENDING);
+        property.setStatus(PropertyStatus.PENDING);
         offer.setCustomer(customer);
         offer.setProperty(property);
         offer.setOfferType(makeOfferRequest.getOfferType());
@@ -158,6 +158,7 @@ public class PropertyServiceImpl implements PropertyService {
         property.addOffer(offer);
         offerRepository.save(offer);
         customerRepository.save(customer);
+        propertyRepository.save(property);
         return offer;
     }
 
@@ -173,6 +174,11 @@ public class PropertyServiceImpl implements PropertyService {
         //Check if the user already made an offer for the property
         if (offer==null) {
             throw new InvalidInputException("You have not made an offer for this property");
+        }
+
+        //Check if the user already made an offer for the property and is either rejected or accepted
+        if (offer.getOfferStatus().equals(OfferStatus.REJECTED) || offer.getOfferStatus().equals(OfferStatus.ACCEPTED)) {
+            throw new InvalidInputException("You cannot update an offer that has been rejected or accepted");
         }
 
         offer.setOfferAmount(makeOfferRequest.getOfferAmount());
@@ -202,6 +208,12 @@ public class PropertyServiceImpl implements PropertyService {
         if (offer==null) {
             throw new InvalidInputException("You have not made an offer for this property");
         }
+        // Check if the number of offers on property is greater than 1
+        if (property.getOffers().size() > 1) {
+            property.setStatus(PropertyStatus.PENDING);
+        }else {
+            property.setStatus(PropertyStatus.AVAILABLE);
+        }
         customer.removeOffer(offer);
         property.removeOffer(offer);
         offerRepository.delete(offer);
@@ -220,7 +232,6 @@ public class PropertyServiceImpl implements PropertyService {
         }
 
         offer.setOfferStatus(OfferStatus.ACCEPTED);
-        property.setStatus(PropertyStatus.PENDING);
         propertyRepository.save(property);
     }
     @Override
