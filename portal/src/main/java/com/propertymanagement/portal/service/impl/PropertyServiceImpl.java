@@ -1,6 +1,9 @@
 package com.propertymanagement.portal.service.impl;
 
 import com.propertymanagement.portal.domain.*;
+import com.propertymanagement.portal.dto.OfferDTO;
+import com.propertymanagement.portal.dto.OwnerDTO;
+import com.propertymanagement.portal.dto.PropertyDTO;
 import com.propertymanagement.portal.dto.request.MakeOfferRequest;
 import com.propertymanagement.portal.exception.InvalidInputException;
 import com.propertymanagement.portal.exception.RecordNotFoundException;
@@ -12,6 +15,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,8 +25,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PropertyServiceImpl implements PropertyService {
@@ -35,6 +39,9 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Autowired
     private OfferRepository offerRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private OwnerRepository ownerRepository;
@@ -116,17 +123,163 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Property getPropertyById(long id) {
-        return propertyRespository.findById(id).get();
+    public PropertyDTO getPropertyById(Long id) {
+
+        Property property = propertyRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Property is not found"));
+        return convertToDTO(property);
+
     }
+
     @Override
-    public void saveProperty(Property property) {
+   public void saveProperty(Property property) {
         propertyRespository.save(property);
     }
 
-    public List<Property> findAllProperties() {
-        return propertyRespository.findAll();
+    public Set<PropertyDTO> getAllProperties() {
+        Set<Property> properties = new HashSet<>(propertyRespository.findAll());
+
+        return properties.stream()
+                .map(property -> modelMapper.map(property, PropertyDTO.class))
+                .collect(Collectors.toSet());
+
     }
+
+    public PropertyDTO createProperty(PropertyDTO propertyDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
+        Property property = convertToEntity(propertyDTO);
+        property.setOwner(owner);
+        property = propertyRespository.save(property);
+        return convertToDTO(property);
+
+    }
+
+    public PropertyDTO addProperty( PropertyDTO propertyDTO) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
+        if (owner == null) {
+            throw new NoSuchElementException ("Owner not found or not authenticated.");
+        }
+        Property property = modelMapper.map(propertyDTO, Property.class);
+        property.setOwner(owner);
+        Property savedProperty = propertyRepository.save(property);
+        return modelMapper.map(savedProperty, PropertyDTO.class);
+
+    }
+
+
+    public PropertyDTO updateProperty( Long propertyId, PropertyDTO propertyDTO) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
+        if (owner == null) {
+            throw new NoSuchElementException ("Owner not found or not authenticated.");
+        }
+
+        Property property = propertyRepository.findById(propertyId)
+                .orElseThrow(() -> new NoSuchElementException("Property not found or not accessible by owner"));
+
+        if (!PropertyStatus.AVAILABLE.equals(property.getStatus())) {
+            throw new IllegalStateException("Cannot update property while it is under Pending or Contingent status");
+        }
+        property.setName(propertyDTO.getName());
+        property.setDescription(propertyDTO.getDescription());
+        property.setPrice(propertyDTO.getPrice());
+        property.setBathRooms(propertyDTO.getBathRooms());
+        property.setBedRooms(propertyDTO.getBedRooms());
+        property.setAddress(propertyDTO.getAddress());
+        property.setImageUrl(propertyDTO.getImageUrl());
+        property.setConstructionDate(propertyDTO.getConstructionDate());
+        property.setStatus(propertyDTO.getStatus());
+        property.setOwner(owner);
+        Property updatedProperty = propertyRepository.save(property);
+        return modelMapper.map(updatedProperty, PropertyDTO.class);
+    }
+
+    public boolean removeProperty( Long propertyId) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
+        if (owner == null) {
+            throw new NoSuchElementException ("Owner not found or not authenticated.");
+        }
+        Property property = propertyRepository.findById(propertyId)
+                .orElseThrow(() -> new NoSuchElementException("Property not found"));
+
+        if(!PropertyStatus.AVAILABLE.equals(property.getStatus())){
+            throw new IllegalArgumentException("Cannot remove property that is under Pending or Contingent status");
+        }
+        owner.getProperties().remove(property);
+        propertyRepository.delete(property);
+        return true;
+
+    }
+
+    public Set<OfferDTO> getOffersByPropertyId(Long propertyId) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
+        if (owner == null) {
+            throw new NoSuchElementException ("Owner not found or not authenticated.");
+        }
+        Property property = propertyRepository.findById(propertyId)
+                .orElseThrow(() -> new NoSuchElementException("Property not found"));
+
+        return property.getOffers().stream()
+                .map(offer -> modelMapper.map(offer, OfferDTO.class))
+                .collect(Collectors.toSet());
+
+    }
+
+    public Set <OfferDTO> getAllOffers() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
+        if (owner == null) {
+            throw new NoSuchElementException ("Owner not found or not authenticated.");
+        }
+
+        Set <Offer> offers = new HashSet<>(offerRepository.findAll());
+
+        return offers.stream().map (offer -> modelMapper.map(offer, OfferDTO.class))
+                .collect(Collectors.toSet());
+
+    }
+
+    public Set<PropertyDTO> addProperties(Set<PropertyDTO> propertyDTOs) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
+        if (owner == null) {
+            throw new NoSuchElementException ("Owner not found or not authenticated.");
+        }
+
+        Set<Property> properties = new HashSet<>();
+        for (PropertyDTO propertyDTO : propertyDTOs) {
+            Property property = convertToEntity(propertyDTO);
+            property.setOwner(owner);
+            properties.add(property);
+        }
+        propertyRespository.saveAll(properties);
+
+        return propertyDTOs;
+
+    }
+
+
+
+
+
+    public PropertyDTO convertToDTO(Property property) {
+        return modelMapper.map(property, PropertyDTO.class);
+    }
+
+    public Property convertToEntity(PropertyDTO propertyDTO) {
+        return modelMapper.map(propertyDTO, Property.class);
+    }
+
 
 
     @Override
