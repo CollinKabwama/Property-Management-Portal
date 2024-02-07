@@ -48,8 +48,11 @@ public class Property {
 
     private String imageUrl;
     private LocalDate constructionDate;
+
     public void addOffer(Offer offer){
         offers.add(offer);
+
+
     }
 
 
