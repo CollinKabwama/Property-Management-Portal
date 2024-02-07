@@ -1,5 +1,6 @@
 package com.propertymanagement.portal.repository;
 
+import com.propertymanagement.portal.domain.Customer;
 import com.propertymanagement.portal.domain.Owner;
 import com.propertymanagement.portal.dto.PropertyDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,8 +12,10 @@ import java.util.Set;
 
 @Repository
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
+    Owner findOwnerByUserEmail(String email);
 
-    
+
+
     //get property by owner id
 
     @Query("SELECT o.properties FROM Owner o WHERE o.id = :ownerId")

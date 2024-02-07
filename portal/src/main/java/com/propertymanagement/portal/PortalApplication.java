@@ -1,7 +1,14 @@
 package com.propertymanagement.portal;
 
 import com.propertymanagement.portal.auth.AuthenticationService;
+import com.propertymanagement.portal.domain.Owner;
+import com.propertymanagement.portal.domain.Property;
 import com.propertymanagement.portal.dto.request.RegisterRequest;
+import com.propertymanagement.portal.repository.OwnerRepository;
+import com.propertymanagement.portal.repository.PropertyRepository;
+import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,13 +17,18 @@ import org.springframework.context.annotation.Bean;
 import static com.propertymanagement.portal.user.Role.*;
 
 @SpringBootApplication
+@Transactional
 public class PortalApplication {
+	@Autowired
+	private OwnerRepository ownerRepository;
+	@Autowired
+	private PropertyRepository propertyRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PortalApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service
 	) {
@@ -38,7 +50,11 @@ public class PortalApplication {
 					.role(CUSTOMER)
 					.build();
 			System.out.println("Customer token: " + service.registerCustomer(customer).getAccessToken());
-
 		};
+	}*/
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
 	}
+
 }
