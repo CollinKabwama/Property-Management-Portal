@@ -22,11 +22,17 @@ public class Owner {
     @JoinColumn
     private User user;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Property> properties = new HashSet<>();
 
     public void addProperty(Property property){
         properties.add(property);
     }
 
+    @Override
+    public String toString() {
+        return "Owner{" +
+                "id=" + id +
+                '}';
+    }
 }

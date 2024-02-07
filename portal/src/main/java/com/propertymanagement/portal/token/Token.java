@@ -1,5 +1,7 @@
 package com.propertymanagement.portal.token;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 import com.propertymanagement.portal.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,6 +31,13 @@ public class Token {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
+    @JsonBackReference
+    @JsonManagedReference
     public User user;
+
+    public String toString() {
+        return "Token(id=" + this.id ;
+    }
 }
 
