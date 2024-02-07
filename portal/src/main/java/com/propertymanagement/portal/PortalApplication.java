@@ -31,7 +31,7 @@ public class PortalApplication {
 		SpringApplication.run(PortalApplication.class, args);
 	}
 
-	/*@Bean
+	@Bean
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service
 	) {
@@ -68,10 +68,10 @@ public class PortalApplication {
 			//ownerRepository.save(owner);
 
 		};
-	}*/
-	@Bean
+	}
+	/*@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
-	}
+	}*/
 
 }

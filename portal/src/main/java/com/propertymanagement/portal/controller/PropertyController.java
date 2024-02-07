@@ -4,6 +4,8 @@ import com.propertymanagement.portal.domain.ListingType;
 import com.propertymanagement.portal.domain.Offer;
 import com.propertymanagement.portal.domain.Property;
 import com.propertymanagement.portal.domain.PropertyType;
+import com.propertymanagement.portal.dto.OfferDTO;
+import com.propertymanagement.portal.dto.PropertyDTO;
 import com.propertymanagement.portal.dto.request.MakeOfferRequest;
 import com.propertymanagement.portal.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,15 +31,64 @@ public class PropertyController {
     }
 
     @GetMapping("/")
-    public List<Property> findAllProperties(){
-        return propertyService.findAllProperties();
+    public ResponseEntity <Set<PropertyDTO>> getAllProperties(){
+        Set<PropertyDTO> properties = propertyService.getAllProperties();
+        return ResponseEntity.ok(properties);
+
     }
 
 
+    @PreAuthorize("hasAuthority('OWNER')")
     @GetMapping("/{id}")
-    public Property getPropertyById(@PathVariable("id") long id) {
-        return propertyService.getPropertyById(id);
+    public ResponseEntity <PropertyDTO>  getPropertyById(@PathVariable("id") Long id) {
+        PropertyDTO propertyDTO = propertyService.getPropertyById(id);
+        return ResponseEntity.ok(propertyDTO);
     }
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @PostMapping("/create")
+    public ResponseEntity <PropertyDTO> createProperty(@RequestBody PropertyDTO propertyDTO){
+        PropertyDTO createdProperty = propertyService.createProperty(propertyDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProperty);
+
+    }
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @PutMapping("/update/{id}")
+    public ResponseEntity <PropertyDTO> updateProperty(@PathVariable("id") Long id, @RequestBody PropertyDTO propertyDTO){
+        PropertyDTO updatedProperty = propertyService.updateProperty(id, propertyDTO);
+        return ResponseEntity.ok(updatedProperty);
+    }
+
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @DeleteMapping("/delete/{id}")
+
+    public ResponseEntity <String> deleteProperty(@PathVariable("id") Long id){
+        boolean isDeleted = propertyService.removeProperty(id);
+        if(isDeleted){
+            return ResponseEntity.ok("Property with id " + id + " has been deleted successfully");
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Property with id " + id + " not found");
+        }
+    }
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @PostMapping("/addProperty")
+    public ResponseEntity <PropertyDTO> addProperty(@RequestBody PropertyDTO propertyDTO){
+        PropertyDTO addedProperty = propertyService.addProperty(propertyDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedProperty);
+    }
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @GetMapping("/{id}/offers")
+    public ResponseEntity <Set<OfferDTO>> getOffersByPropertyId(@PathVariable("id") Long id){
+        Set<OfferDTO> offers = propertyService.getOffersByPropertyId(id);
+        return ResponseEntity.ok(offers);
+
+    }
+
+
     @GetMapping
     public Page<Property> getProperties(
             @RequestParam(required = false) Double minPrice,

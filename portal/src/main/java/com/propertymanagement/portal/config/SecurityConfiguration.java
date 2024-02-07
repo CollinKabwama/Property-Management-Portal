@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                                 //.authenticated()
                          //       .anyRequest()
                        // .authenticated()
+
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
