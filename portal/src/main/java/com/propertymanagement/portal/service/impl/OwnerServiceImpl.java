@@ -97,7 +97,7 @@ public class OwnerServiceImpl implements OwnerService {
     public PropertyDTO addProperty(Long ownerId, PropertyDTO propertyDTO){
         // We discussed that the id is removed for security reasons
 
-        Owner owner = ownerRepository.findById(ownerId)
+        Owner owner = ownerRepository.findById(ownerId)   // We discussed that the id is removed for security reasons
                 .orElseThrow(() -> new NoSuchElementException("Owner not found"));
 
         Property property = modelMapper.map(propertyDTO, Property.class);
@@ -130,26 +130,13 @@ public class OwnerServiceImpl implements OwnerService {
         return true;
     }
 
-
-    //New Implementation
-
-  /*  public PropertyDTO createProperty(Long ownerId, PropertyDTO propertyDTO) {
-        Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new NoSuchElementException("Owner not found"));
-
-        Property property = modelMapper.map(propertyDTO, Property.class);
-        property.setOwner(owner);
-        Property savedProperty = propertyRepository.save(property);
-        return modelMapper.map(savedProperty, PropertyDTO.class);
-    }*/
-
     public PropertyDTO getPropertyById( Long propertyId) {
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new NoSuchElementException("Property not found or not accessible by owner"));
         return modelMapper.map(property, PropertyDTO.class);
     }
 
-    public PropertyDTO updateProperty(Long propertyId, PropertyDTO propertyDTO) {
+    public PropertyDTO updateProperty(Long propertyId, PropertyDTO propertyDTO) {//
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new NoSuchElementException("Property not found or not accessible by owner"));
 
@@ -188,7 +175,5 @@ public class OwnerServiceImpl implements OwnerService {
 
         return modelMapper.map(ownerDTO, Owner.class);
     }
-
-
 
 }
