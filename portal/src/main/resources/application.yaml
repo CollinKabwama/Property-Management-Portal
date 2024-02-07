@@ -32,6 +32,18 @@ spring:
   sql:
     init:
       mode: never
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: collinkabwama@gmail.com
+    password: acksgdaotluztucy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 
 logging:
   level:

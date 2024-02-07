@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/v1/properties")
@@ -104,6 +105,35 @@ public class PropertyController {
     public void rejectOffer(@PathVariable Long propertyId, @PathVariable Long offerId){
         propertyService.rejectOffer(propertyId, offerId);
     }
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{propertyId}/offers/{offerId}/make-contingent")
+    public void makeContingent(@PathVariable Long propertyId, @PathVariable Long offerId){
+        propertyService.makeContingent(propertyId, offerId);
+    }
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{propertyId}/offers/{offerId}/cancel-contingent")
+    public void cancelContingent(@PathVariable Long propertyId, @PathVariable Long offerId){
+        propertyService.cancelContingent(propertyId, offerId);
+    }
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/favourite-properties")
+    public Set<Property> getFavouritePropertiesByCustomer(){
+        return propertyService.getFavouritePropertiesByCustomer();
+    }
+
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/offers")
+    public Set<Offer> getOffersByCustomer(){
+        return propertyService.getOffersByCustomer();
+    }
+
+
 
 
 

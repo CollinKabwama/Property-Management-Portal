@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PropertyServiceImpl implements PropertyService {
@@ -236,7 +237,59 @@ public class PropertyServiceImpl implements PropertyService {
     }
     @Override
     public void rejectOffer(Long propertyId, Long offerId) {
-        /////////
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
+        Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new RecordNotFoundException("Offer not found with id: " + offerId));
+        if (property.getStatus()== PropertyStatus.CONTINGENT){
+            throw new InvalidInputException("Property is in Contingent status, you cannot reject an offer for this property");
+        }
+        if(property.getOffers().size()<2){
+            property.setStatus(PropertyStatus.AVAILABLE);
+        }
+        offer.setOfferStatus(OfferStatus.REJECTED);
+        propertyRepository.save(property);
+    }
+
+    @Override
+    public void makeContingent(Long propertyId, Long offerId) {
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
+        Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new RecordNotFoundException("Offer not found with id: " + offerId));
+        if (property.getStatus()== PropertyStatus.CONTINGENT){
+            throw new InvalidInputException("Property is already in Contingent status");
+        }
+        if (property.getOffers().stream().anyMatch(o -> o.getOfferStatus().equals(OfferStatus.ACCEPTED))) {
+            throw new InvalidInputException("Another offer has already been accepted for this property");
+        }
+        // Set the status of all the other offers to the property to rejected
+        property.getOffers().stream().filter(o -> !o.getId().equals(offerId)).forEach(o -> o.setOfferStatus(OfferStatus.REJECTED));
+        property.setStatus(PropertyStatus.CONTINGENT);
+        propertyRepository.save(property);
+    }
+
+    @Override
+    public void cancelContingent(Long propertyId, Long offerId) {
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
+        Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new RecordNotFoundException("Offer not found with id: " + offerId));
+        if (property.getStatus()!= PropertyStatus.CONTINGENT){
+            throw new InvalidInputException("Property is not in Contingent status");
+        }
+        if (property.getOffers().size()<2){
+            property.setStatus(PropertyStatus.AVAILABLE);
+        }
+        propertyRepository.save(property);
+    }
+
+    @Override
+    public Set<Property> getFavouritePropertiesByCustomer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = customerRepository.findCustomerByUserEmail(authentication.getName());
+        return customer.getSavedList();
+    }
+
+    @Override
+    public Set<Offer> getOffersByCustomer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = customerRepository.findCustomerByUserEmail(authentication.getName());
+        return customer.getOffers();
     }
 
     @Override

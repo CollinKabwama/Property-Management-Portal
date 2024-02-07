@@ -4,6 +4,7 @@ import com.propertymanagement.portal.auth.AuthenticationService;
 import com.propertymanagement.portal.domain.Owner;
 import com.propertymanagement.portal.domain.Property;
 import com.propertymanagement.portal.dto.request.RegisterRequest;
+import com.propertymanagement.portal.email.EmailService;
 import com.propertymanagement.portal.repository.OwnerRepository;
 import com.propertymanagement.portal.repository.PropertyRepository;
 import jakarta.transaction.Transactional;
@@ -24,6 +25,8 @@ public class PortalApplication {
 	@Autowired
 	private PropertyRepository propertyRepository;
 
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(PortalApplication.class, args);
 	}
@@ -33,7 +36,7 @@ public class PortalApplication {
 			AuthenticationService service
 	) {
 		return args -> {
-			var admin = RegisterRequest.builder()
+			/*var admin = RegisterRequest.builder()
 					.firstname("Owner")
 					.lastname("Owner")
 					.email("ownwer@mail.com")
@@ -50,6 +53,20 @@ public class PortalApplication {
 					.role(CUSTOMER)
 					.build();
 			System.out.println("Customer token: " + service.registerCustomer(customer).getAccessToken());
+			Owner owner =  ownerRepository.findById(1L).get();
+
+			Property property1 = new Property();
+			property1.setName("Property 1");
+			Property property2 = new Property();
+			property1.setName("Property 2");
+			property1.setOwner(owner);
+			//property2.setOwner(owner);
+			owner.addProperty(property1);
+			owner.addProperty(property2);
+			propertyRepository.save(property1);
+			propertyRepository.save(property2);
+			//ownerRepository.save(owner);
+
 		};
 	}*/
 	@Bean

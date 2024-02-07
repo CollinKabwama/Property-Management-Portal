@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PropertyService {
     public void saveProperty(Property property);
@@ -36,4 +37,12 @@ public interface PropertyService {
     void acceptOffer(Long propertyId, Long offerId);
 
     void rejectOffer(Long propertyId, Long offerId);
+
+    void makeContingent(Long propertyId, Long offerId);
+
+    void cancelContingent(Long propertyId, Long offerId);
+
+    Set<Property> getFavouritePropertiesByCustomer();
+
+    Set<Offer> getOffersByCustomer();
 }
