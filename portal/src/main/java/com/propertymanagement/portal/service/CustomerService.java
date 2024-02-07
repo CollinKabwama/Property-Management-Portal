@@ -1,4 +1,4 @@
-package com.propertymanagement.portal.service.impl;
+package com.propertymanagement.portal.service;
 
 import com.propertymanagement.portal.domain.Customer;
 import com.propertymanagement.portal.domain.Offer;
@@ -15,15 +15,5 @@ public interface CustomerService {
     public List<Customer> getAllCustomers();
     public Set<Property> getFavouritePropertiesByCustomer(Long id);
     public Set<Offer> getOffersByCustomer(Long id);
-    Offer makeOffer(Long propertyId, MakeOfferRequest makeOfferRequest);
-    void addToFavourites(Long propertyId);
 
-    void removeFromFavourites(Long propertyId);
-    public Offer updateOffer(Long propertyId, MakeOfferRequest makeOfferRequest) ;
-
-    void deleteOffer(Long propertyId);
-
-    void acceptOffer(Long propertyId, Long offerId);
-
-    void rejectOffer(Long propertyId, Long offerId);
 }
