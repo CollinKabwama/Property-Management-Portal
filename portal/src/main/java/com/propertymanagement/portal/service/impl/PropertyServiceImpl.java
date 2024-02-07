@@ -1,4 +1,4 @@
-package com.propertymanagement.portal.service.serviceImpl;
+package com.propertymanagement.portal.service.impl;
 
 import com.propertymanagement.portal.domain.ListingType;
 import com.propertymanagement.portal.domain.Property;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class propertyServiceImpl implements PropertyService {
+public class PropertyServiceImpl implements PropertyService {
     @Autowired
     PropertyRespository propertyRespository;
 
@@ -78,16 +78,16 @@ public class propertyServiceImpl implements PropertyService {
             predicates.add(builder.equal(root.get("listingType"), listingType));
         }
         if (minBedRooms != null) {
-            predicates.add(builder.greaterThanOrEqualTo(root.get("bedrooms"), minBedRooms));
+            predicates.add(builder.greaterThanOrEqualTo(root.get("bedRooms"), minBedRooms));
         }
         if (maxBedRooms != null) {
-            predicates.add(builder.lessThanOrEqualTo(root.get("bedrooms"), maxBedRooms));
+            predicates.add(builder.lessThanOrEqualTo(root.get("bedRooms"), maxBedRooms));
         }
         if (minBathRooms != null) {
-            predicates.add(builder.greaterThanOrEqualTo(root.get("bathrooms"), minBathRooms));
+            predicates.add(builder.greaterThanOrEqualTo(root.get("bathRooms"), minBathRooms));
         }
         if (maxBathRooms != null) {
-            predicates.add(builder.lessThanOrEqualTo(root.get("bathrooms"), maxBathRooms));
+            predicates.add(builder.lessThanOrEqualTo(root.get("bathRooms"), maxBathRooms));
         }
         if (propertyType != null) {
             predicates.add(builder.equal(root.get("propertyType"), propertyType));

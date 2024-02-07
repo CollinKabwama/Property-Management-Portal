@@ -2,6 +2,8 @@ package com.propertymanagement.portal;
 
 import com.propertymanagement.portal.auth.AuthenticationService;
 import com.propertymanagement.portal.dto.request.RegisterRequest;
+import com.propertymanagement.portal.repository.PropertyRespository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +14,8 @@ import static com.propertymanagement.portal.user.Role.OWNER;
 
 @SpringBootApplication
 public class PortalApplication {
+	@Autowired
+	 PropertyRespository propertyRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PortalApplication.class, args);
