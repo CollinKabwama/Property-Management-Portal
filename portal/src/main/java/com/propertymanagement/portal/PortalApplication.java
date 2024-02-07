@@ -28,7 +28,7 @@ public class PortalApplication {
 		SpringApplication.run(PortalApplication.class, args);
 	}
 
-	/*@Bean
+	@Bean
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service
 	) {
@@ -51,10 +51,10 @@ public class PortalApplication {
 					.build();
 			System.out.println("Customer token: " + service.registerCustomer(customer).getAccessToken());
 		};
-	}*/
-	@Bean
+	}
+	/*@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
-	}
+	}*/
 
 }

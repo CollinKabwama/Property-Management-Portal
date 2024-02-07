@@ -12,11 +12,10 @@ import java.util.Set;
 
 @Repository
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
-
     Owner findOwnerByUserEmail(String email);
 
 
-    
+
     //get property by owner id
 
     @Query("SELECT o.properties FROM Owner o WHERE o.id = :ownerId")
@@ -27,7 +26,6 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
     PropertyDTO updatePropertyByOwnerId(Long ownerId, PropertyDTO propertyDTO);
 
     // delete property by owner id
-
 
 
 

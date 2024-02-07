@@ -4,18 +4,21 @@ import com.propertymanagement.portal.domain.ListingType;
 import com.propertymanagement.portal.domain.Offer;
 import com.propertymanagement.portal.domain.Property;
 import com.propertymanagement.portal.domain.PropertyType;
+import com.propertymanagement.portal.dto.OfferDTO;
+import com.propertymanagement.portal.dto.PropertyDTO;
 import com.propertymanagement.portal.dto.request.MakeOfferRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PropertyService {
     public void saveProperty(Property property);
 
-    Property getPropertyById(long id);
+    PropertyDTO getPropertyById(Long id);
 
-    List<Property> findAllProperties();
+    public Set<PropertyDTO> getAllProperties();
 
     public Page<Property> findPropertiesByCriteria(
             Double minPrice, Double maxPrice,
@@ -36,4 +39,25 @@ public interface PropertyService {
     void acceptOffer(Long propertyId, Long offerId);
 
     void rejectOffer(Long propertyId, Long offerId);
+
+
+    PropertyDTO createProperty(PropertyDTO propertyDTO);
+
+   PropertyDTO addProperty(PropertyDTO propertyDTO);
+
+    public Set <PropertyDTO> addProperties(Set<PropertyDTO> propertyDTOs);
+
+   boolean removeProperty( Long propertyId);
+
+    PropertyDTO updateProperty(Long propertyId, PropertyDTO propertyDTO);
+
+    public Set <OfferDTO> getAllOffers();
+
+   public Set <OfferDTO> getOffersByPropertyId(Long propertyId);
+
+    public PropertyDTO convertToDTO(Property property);
+
+    public Property convertToEntity(PropertyDTO propertyDTO);
+
+
 }
