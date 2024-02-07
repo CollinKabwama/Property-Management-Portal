@@ -32,11 +32,12 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
-                              //  .permitAll()
-                             //  .anyRequest().permitAll()
-                                // .authenticated()
-                               //  .anyRequest()
-                      .authenticated()
+                                .permitAll()
+                                .anyRequest().permitAll()
+                                //.authenticated()
+                         //       .anyRequest()
+                       // .authenticated()
+
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
