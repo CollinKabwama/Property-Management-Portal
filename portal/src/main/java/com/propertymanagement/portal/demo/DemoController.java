@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/demo-controller")
 public class DemoController {
-    @Autowired
-    private EmailService emailService;
+   /* @Autowired
+    private EmailService emailService;*/
     @GetMapping
     public ResponseEntity<String> testingHello() {
         return ResponseEntity.ok("Hello");

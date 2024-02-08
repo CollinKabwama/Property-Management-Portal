@@ -34,4 +34,7 @@ public class UserService {
         // save the new password
         repository.save(user);
     }
+    public User getUserByEmail(String email){
+        return repository.findByEmail( email).orElseThrow(()-> new InvalidInputException("User not found"));
+    }
 }
