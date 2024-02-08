@@ -25,11 +25,11 @@
 -- INSERT INTO offer (offer_amount, offer_status, offer_type, property_id, customer_id)
 -- VALUES (260000, 'REJECTED', 'CREDIT', 1, 1);
 
-INSERT INTO users (firstname, lastname, email, password, role, phone_number) VALUES ('Alice', 'Johnson', 'alice@example.com', 'password', 'CUSTOMER', '123-456-7890');
-INSERT INTO users (firstname, lastname, email, password, role, phone_number) VALUES ('Bob', 'Smith', 'bob@example.com', 'password', 'OWNER', '987-654-3210');
+INSERT INTO users (firstname, lastname, email, password, role, phone_number) VALUES ('Alice', 'Johnson', 'alice@example.com', 'password', 'CUSTOMER', '$2a$12$T2UV91gldCYo4oXe5bDx7OYgtCqUQBFS4zATelokD5hFecNHyYK26');
+INSERT INTO users (firstname, lastname, email, password, role, phone_number) VALUES ('Bob', 'Smith', 'bob@example.com', 'password', 'OWNER', '$2a$12$T2UV91gldCYo4oXe5bDx7OYgtCqUQBFS4zATelokD5hFecNHyYK26');
 -- Insert Users
-INSERT INTO users (firstname, lastname, email, password, role, phone_number) VALUES ('John', 'Doe', 'john.doe@example.com', 'encrypted_password', 'OWNER', '555-1234');
-INSERT INTO users (firstname, lastname, email, password, role, phone_number) VALUES ('Jane', 'Smith', 'jane.smith@example.com', 'encrypted_password', 'CUSTOMER', '555-5678');
+INSERT INTO users (firstname, lastname, email, password, role, phone_number) VALUES ('John', 'Doe', 'john.doe@example.com', 'encrypted_password', 'OWNER', '$2a$12$T2UV91gldCYo4oXe5bDx7OYgtCqUQBFS4zATelokD5hFecNHyYK26');
+INSERT INTO users (firstname, lastname, email, password, role, phone_number) VALUES ('Jane', 'Smith', 'jane.smith@example.com', 'encrypted_password', 'CUSTOMER', '$2a$12$T2UV91gldCYo4oXe5bDx7OYgtCqUQBFS4zATelokD5hFecNHyYK26');
 
 -- Insert Addresses
 INSERT INTO address (line1, line2, city, postal_code, state, country) VALUES ('123 Main St', 'Apt 1', 'Fairfield', '52557', 'Iowa', 'USA');
