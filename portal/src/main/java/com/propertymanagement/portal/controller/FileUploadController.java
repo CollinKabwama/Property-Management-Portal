@@ -17,9 +17,11 @@ import java.nio.file.StandardCopyOption;
 @RequestMapping("/api/files")
 public class FileUploadController {
 
-    private final Path rootLocation = Paths.get("src/main/resources");
+   // private final Path rootLocation = Paths.get("src/main/resources");
+    private final Path rootLocation = Paths.get("/media/collin/New Volume/Moved folders/Graduate school/WAA/PropertyManagementPortal-Front/mini-property-management-frontend-ug/src/assets/images");
+
     //private final String rootLocation = "src/main/resources";
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('OWNER')")
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
         try {
