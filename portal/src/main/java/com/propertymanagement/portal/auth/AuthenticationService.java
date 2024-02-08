@@ -28,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -59,7 +60,8 @@ public class AuthenticationService {
                 .phoneNumber(request.getPhoneNumber())
                 .build();
         var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        Map<String, Object> claims = Map.of("role",role);
+        var jwtToken = jwtService.generateToken(claims,user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
 
@@ -90,7 +92,8 @@ public class AuthenticationService {
                 .role(role)
                 .build();
         var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        Map<String, Object> claims = Map.of("role",role);
+        var jwtToken = jwtService.generateToken(claims,user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
 
@@ -115,7 +118,8 @@ public class AuthenticationService {
         );
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        Map<String, Object> claims = Map.of("role",user.getRole());
+        var jwtToken = jwtService.generateToken(claims,user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
@@ -163,7 +167,8 @@ public class AuthenticationService {
             var user = this.userRepository.findByEmail(userEmail)
                     .orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
-                var accessToken = jwtService.generateToken(user);
+                Map<String, Object> claims = Map.of("role",user.getRole());
+                var accessToken = jwtService.generateToken(claims,user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
                 var authResponse = AuthenticationResponse.builder()

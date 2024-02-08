@@ -60,4 +60,12 @@ public interface PropertyService {
     public Property convertToEntity(PropertyDTO propertyDTO);
 
 
+
+    void makeContingent(Long propertyId, Long offerId);
+
+    void cancelContingent(Long propertyId, Long offerId);
+
+    Set<Property> getFavouritePropertiesByCustomer();
+
+    Set<Offer> getOffersByCustomer();
 }
