@@ -2,6 +2,7 @@ package com.propertymanagement.portal.user;
 
 import com.propertymanagement.portal.dto.request.ChangePasswordRequest;
 import com.propertymanagement.portal.exception.InvalidInputException;
+import com.propertymanagement.portal.exception.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,4 +35,11 @@ public class UserService {
         // save the new password
         repository.save(user);
     }
+
+
+    public User findByEmail (String email){
+        return repository.findByEmail(email).orElseThrow(()->new RecordNotFoundException("User with email" + email + " does not exist"));
+    }
+
+
 }

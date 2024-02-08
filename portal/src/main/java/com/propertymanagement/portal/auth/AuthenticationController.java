@@ -19,12 +19,14 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
         @PostMapping("/register-owner")
+        @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<AuthenticationResponse> registerOwner(
             @RequestBody RegisterRequest request
     ) {
         return ResponseEntity.ok(service.registerOwner(request));
     }
     @PostMapping("/register-customer")
+    @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<AuthenticationResponse> registerManager(
             @RequestBody RegisterRequest request
     ) {
@@ -32,6 +34,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
+    @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
     ) {
@@ -39,6 +42,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh-token")
+    @CrossOrigin(origins = "http://localhost:5173")
     public void refreshToken(
             HttpServletRequest request,
             HttpServletResponse response
