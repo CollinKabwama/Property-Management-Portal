@@ -4,7 +4,6 @@ import com.propertymanagement.portal.auth.AuthenticationService;
 import com.propertymanagement.portal.domain.Owner;
 import com.propertymanagement.portal.domain.Property;
 import com.propertymanagement.portal.dto.request.RegisterRequest;
-import com.propertymanagement.portal.email.EmailService;
 import com.propertymanagement.portal.repository.OwnerRepository;
 import com.propertymanagement.portal.repository.PropertyRepository;
 import jakarta.transaction.Transactional;
