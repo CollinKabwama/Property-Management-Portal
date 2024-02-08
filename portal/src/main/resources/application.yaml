@@ -14,31 +14,35 @@
 #   database: postgresql
 #   database-platform: org.hibernate.dialect.PostgreSQLDialect
 
-####
-
-
 spring:
-  application:
-    name: spring-data-demo-1
   datasource:
-    password: 1
-    url: jdbc:postgresql://localhost:5432/Property_Mangement
-    username: postgres
+    url: jdbc:mysql://localhost:3306/waa_project?useSSL=false&serverTimezone=UTC
+    username: root
+    password: Collina1!
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: false
-    show-sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    # delay data.sql after Hibernate create tbl
     defer-datasource-initialization: true
-    generate-ddl: true
   sql:
     init:
-      mode: always
-server:
-  port: 8080
+      mode: never
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: collinkabwama@gmail.com
+    password: acksgdaotluztucy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 
 logging:

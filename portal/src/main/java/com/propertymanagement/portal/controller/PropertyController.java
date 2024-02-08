@@ -158,6 +158,35 @@ public class PropertyController {
         propertyService.rejectOffer(propertyId, offerId);
     }
 
+    @PreAuthorize("hasAuthority('OWNER')")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{propertyId}/offers/{offerId}/make-contingent")
+    public void makeContingent(@PathVariable Long propertyId, @PathVariable Long offerId){
+        propertyService.makeContingent(propertyId, offerId);
+    }
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{propertyId}/offers/{offerId}/cancel-contingent")
+    public void cancelContingent(@PathVariable Long propertyId, @PathVariable Long offerId){
+        propertyService.cancelContingent(propertyId, offerId);
+    }
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/favourite-properties")
+    public Set<Property> getFavouritePropertiesByCustomer(){
+        return propertyService.getFavouritePropertiesByCustomer();
+    }
+
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/offers")
+    public Set<Offer> getOffersByCustomer(){
+        return propertyService.getOffersByCustomer();
+    }
+
+
+
 
 
 
