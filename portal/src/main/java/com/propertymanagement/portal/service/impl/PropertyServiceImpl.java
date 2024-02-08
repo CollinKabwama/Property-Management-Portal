@@ -294,7 +294,20 @@ public class PropertyServiceImpl implements PropertyService {
         return modelMapper.map(propertyDTO, Property.class);
     }
 
-
+    @Override
+    public boolean illegibilityToMakeOffer(Long propertyId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = customerRepository.findCustomerByUserEmail(authentication.getName());
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
+        if (property.getStatus()== PropertyStatus.CONTINGENT){
+            return false;
+        }
+        //Check if the user already made an offer for the property and is either pemding or accepted
+        if (property.getOffers().stream().anyMatch(o -> o.getCustomer().getId().equals(customer.getId()) && (o.getOfferStatus().equals(OfferStatus.PENDING) || o.getOfferStatus().equals(OfferStatus.ACCEPTED)))) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public Offer makeOffer(Long propertyId, MakeOfferRequest makeOfferRequest) {
