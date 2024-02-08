@@ -186,7 +186,12 @@ public class PropertyController {
     }
 
 
-
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{propertyId}/offers-illegibility")
+    public Boolean makeOffer(@PathVariable Long propertyId){
+        return propertyService.illegibilityToMakeOffer(propertyId);
+    }
 
 
 

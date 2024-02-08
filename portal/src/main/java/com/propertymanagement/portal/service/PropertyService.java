@@ -68,4 +68,6 @@ public interface PropertyService {
     Set<Property> getFavouritePropertiesByCustomer();
 
     Set<Offer> getOffersByCustomer();
-}
+    public boolean illegibilityToMakeOffer(Long propertyId) ;
+
+    }

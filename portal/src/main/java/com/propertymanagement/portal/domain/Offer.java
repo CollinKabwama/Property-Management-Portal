@@ -41,7 +41,7 @@ public class Offer {
 
     private LocalDateTime offerDate;
 
-    @Override
+    /*@Override
     public String toString() {
         return "Offer{" +
                 "id=" + id +
@@ -50,7 +50,7 @@ public class Offer {
                 ", offerType=" + offerType +
                 ", offerDate=" + offerDate +
                 '}';
-    }
+    }*/
     @Override
     public int hashCode() {
         return Objects.hash(id);
