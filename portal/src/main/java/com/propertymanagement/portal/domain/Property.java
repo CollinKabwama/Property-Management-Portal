@@ -1,5 +1,6 @@
 package com.propertymanagement.portal.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.propertymanagement.portal.user.User;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -37,6 +39,7 @@ public class Property {
     private int bathRooms;
     private int bedRooms;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
@@ -45,7 +48,7 @@ public class Property {
     @OneToMany(mappedBy = "property", cascade = CascadeType.PERSIST)
     private Set<Offer> offers = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.ALL)
     private Address address;
 
     private String imageUrl;
@@ -59,6 +62,12 @@ public class Property {
     public void removeOffer(Offer offer){
         offers.remove(offer);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price);
+    }
+
 
 
 

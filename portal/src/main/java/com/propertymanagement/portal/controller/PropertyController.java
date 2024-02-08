@@ -30,7 +30,7 @@ public class PropertyController {
         propertyService.saveProperty(property);
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity <Set<PropertyDTO>> getAllProperties(){
         Set<PropertyDTO> properties = propertyService.getAllProperties();
         return ResponseEntity.ok(properties);

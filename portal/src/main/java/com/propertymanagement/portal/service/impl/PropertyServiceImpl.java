@@ -1,6 +1,7 @@
 package com.propertymanagement.portal.service.impl;
 
 import com.propertymanagement.portal.domain.*;
+import com.propertymanagement.portal.dto.AddressDTO;
 import com.propertymanagement.portal.dto.OfferDTO;
 import com.propertymanagement.portal.dto.OwnerDTO;
 import com.propertymanagement.portal.dto.PropertyDTO;
@@ -23,12 +24,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+
+@Transactional
 public class PropertyServiceImpl implements PropertyService {
     @Autowired
     PropertyRespository propertyRespository;
@@ -189,7 +193,17 @@ public class PropertyServiceImpl implements PropertyService {
         property.setPrice(propertyDTO.getPrice());
         property.setBathRooms(propertyDTO.getBathRooms());
         property.setBedRooms(propertyDTO.getBedRooms());
-        property.setAddress(propertyDTO.getAddress());
+
+        AddressDTO addressDTO = propertyDTO.getAddress();
+        Address address = new Address();
+        address.setCity(addressDTO.getLine1());
+        address.setLine1(addressDTO.getLine2());
+        address.setLine2(addressDTO.getCity());
+        address.setPostalCode(addressDTO.getPostalCode());
+        address.setState(addressDTO.getState());
+        address.setCountry(addressDTO.getCountry());
+        property.setAddress(address);
+
         property.setImageUrl(propertyDTO.getImageUrl());
         property.setConstructionDate(propertyDTO.getConstructionDate());
         property.setStatus(propertyDTO.getStatus());

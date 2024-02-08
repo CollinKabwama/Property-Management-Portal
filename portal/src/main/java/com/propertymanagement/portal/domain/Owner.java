@@ -1,5 +1,6 @@
 package com.propertymanagement.portal.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.propertymanagement.portal.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class Owner {
     @JoinColumn
     private User user;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Property> properties = new HashSet<>();
 
