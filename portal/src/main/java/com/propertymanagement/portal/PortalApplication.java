@@ -31,12 +31,12 @@ public class PortalApplication {
 		SpringApplication.run(PortalApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service
 	) {
 		return args -> {
-			/*var admin = RegisterRequest.builder()
+			var admin = RegisterRequest.builder()
 					.firstname("Owner")
 					.lastname("Owner")
 					.email("ownwer@mail.com")
