@@ -1,8 +1,10 @@
 package com.propertymanagement.portal.service.impl;
 
+import com.propertymanagement.portal.domain.Address;
 import com.propertymanagement.portal.domain.Owner;
 import com.propertymanagement.portal.domain.Property;
 import com.propertymanagement.portal.domain.PropertyStatus;
+import com.propertymanagement.portal.dto.AddressDTO;
 import com.propertymanagement.portal.dto.OwnerDTO;
 import com.propertymanagement.portal.dto.PropertyDTO;
 import com.propertymanagement.portal.dto.UserDTO;
@@ -148,7 +150,16 @@ public class OwnerServiceImpl implements OwnerService {
         property.setPrice(propertyDTO.getPrice());
         property.setBathRooms(propertyDTO.getBathRooms());
         property.setBedRooms(propertyDTO.getBedRooms());
-        property.setAddress(propertyDTO.getAddress());
+
+        AddressDTO addressDTO = propertyDTO.getAddress();
+        Address address = new Address();
+        address.setCity(addressDTO.getLine1());
+        address.setLine1(addressDTO.getLine2());
+        address.setLine2(addressDTO.getCity());
+        address.setPostalCode(addressDTO.getPostalCode());
+        address.setState(addressDTO.getState());
+        address.setCountry(addressDTO.getCountry());
+
         property.setImageUrl(propertyDTO.getImageUrl());
         property.setConstructionDate(propertyDTO.getConstructionDate());
         property.setStatus(propertyDTO.getStatus());
