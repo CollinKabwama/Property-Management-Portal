@@ -20,25 +20,30 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     public Customer getCustomerById(@PathVariable Long id){
         return customerService.getCustomerById(id);
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public List<Customer> getAllCustomers(){
         return customerService.getAllCustomers();
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}/favourite-properties")
     public Set<Property> getFavouritePropertiesByCustomer(@PathVariable Long id){
         return customerService.getFavouritePropertiesByCustomer(id);
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{id}")
     public void deleteCustomerById(@PathVariable Long id){
         customerService.deleteCustomerById(id);
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}/offers")
     public Set<Offer> getOffersByCustomer(Long id){
