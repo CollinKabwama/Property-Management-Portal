@@ -3,6 +3,7 @@ package com.propertymanagement.portal.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,10 +40,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-                                .anyRequest().permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/properties").permitAll()
+                                //.anyRequest().permitAll()
                                 //.authenticated()
-                         //       .anyRequest()
-                       // .authenticated()
+                               .anyRequest()
+                        .authenticated()
 
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

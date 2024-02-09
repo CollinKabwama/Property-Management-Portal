@@ -109,6 +109,35 @@ public class AuthenticationService {
                 .build();
     }
 
+    public AuthenticationResponse registerAdmin(RegisterRequest request) {
+        // check existing user
+        Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            throw new RecordAlreadyExistsException("This username is not available!");
+        }
+
+        Role role = Role.valueOf("ADMIN");
+        var user = User.builder()
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(role)
+                .phoneNumber(request.getPhoneNumber())
+                .build();
+        var savedUser = userRepository.save(user);
+        Map<String, Object> claims = Map.of("role",role);
+        var jwtToken = jwtService.generateToken(claims,user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+        saveUserToken(savedUser, jwtToken);
+
+        userRepository.save(user);
+        return AuthenticationResponse.builder()
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

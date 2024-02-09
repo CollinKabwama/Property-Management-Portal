@@ -67,5 +67,8 @@ public interface PropertyService {
 
     Set<Property> getFavouritePropertiesByCustomer();
 
-    Set<Offer> getOffersByCustomer();
-}
+    Set<OfferDTO> getOffersByCustomer();
+    public boolean illegibilityToMakeOffer(Long propertyId) ;
+    public boolean canDeleteOffer(Long propertyId) ;
+
+    }

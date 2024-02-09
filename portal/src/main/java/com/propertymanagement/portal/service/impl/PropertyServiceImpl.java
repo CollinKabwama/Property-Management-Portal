@@ -31,7 +31,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-
 @Transactional
 public class PropertyServiceImpl implements PropertyService {
     @Autowired
@@ -301,7 +300,20 @@ public class PropertyServiceImpl implements PropertyService {
         return modelMapper.map(propertyDTO, Property.class);
     }
 
-
+    @Override
+    public boolean illegibilityToMakeOffer(Long propertyId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = customerRepository.findCustomerByUserEmail(authentication.getName());
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
+        if (property.getStatus()== PropertyStatus.CONTINGENT){
+            return false;
+        }
+        //Check if the user already made an offer for the property and is either pemding or accepted
+        if (property.getOffers().stream().anyMatch(o -> o.getCustomer().getId().equals(customer.getId()) && (o.getOfferStatus().equals(OfferStatus.PENDING) || o.getOfferStatus().equals(OfferStatus.ACCEPTED)))) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public Offer makeOffer(Long propertyId, MakeOfferRequest makeOfferRequest) {
@@ -374,6 +386,11 @@ public class PropertyServiceImpl implements PropertyService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Customer customer = customerRepository.findCustomerByUserEmail(authentication.getName());
         Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
+
+        if (property.getStatus()== PropertyStatus.CONTINGENT){
+            throw new InvalidInputException("Property is in Contingent status, you cannot cancel an offer for this property");
+        }
+
         if (property.getStatus()== PropertyStatus.CONTINGENT){
             property.setStatus(PropertyStatus.AVAILABLE);
         }
@@ -391,6 +408,17 @@ public class PropertyServiceImpl implements PropertyService {
         customer.removeOffer(offer);
         property.removeOffer(offer);
         offerRepository.delete(offer);
+    }
+
+    @Override
+    public boolean canDeleteOffer(Long propertyId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = customerRepository.findCustomerByUserEmail(authentication.getName());
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
+        if (property.getStatus()== PropertyStatus.CONTINGENT){
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -459,10 +487,11 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Set<Offer> getOffersByCustomer() {
+    public Set<OfferDTO> getOffersByCustomer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Customer customer = customerRepository.findCustomerByUserEmail(authentication.getName());
-        return customer.getOffers();
+        return customer.getOffers().stream().map (offer -> modelMapper.map(offer, OfferDTO.class))
+                .collect(Collectors.toSet());
     }
 
     @Override

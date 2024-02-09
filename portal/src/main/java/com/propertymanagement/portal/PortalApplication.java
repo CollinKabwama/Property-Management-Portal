@@ -35,14 +35,14 @@ public class PortalApplication {
 			AuthenticationService service
 	) {
 		return args -> {
-			var admin = RegisterRequest.builder()
+			var owner = RegisterRequest.builder()
 					.firstname("Owner")
 					.lastname("Owner")
-					.email("ownwer@mail.com")
+					.email("owner@mail.com")
 					.password("password")
 					.role(OWNER)
 					.build();
-			System.out.println("Owner token: " + service.registerOwner(admin).getAccessToken());
+			System.out.println("Owner token: " + service.registerOwner(owner).getAccessToken());
 
 			var customer = RegisterRequest.builder()
 					.firstname("Customer")
@@ -52,19 +52,15 @@ public class PortalApplication {
 					.role(CUSTOMER)
 					.build();
 			System.out.println("Customer token: " + service.registerCustomer(customer).getAccessToken());
-			Owner owner =  ownerRepository.findById(1L).get();
+			var admin = RegisterRequest.builder()
+					.firstname("Admin")
+					.lastname("Admin")
+					.email("admin@mail.com")
+					.password("password")
+					.role(ADMIN)
+					.build();
+			System.out.println("Admin token: " + service.registerAdmin(admin).getAccessToken());
 
-			Property property1 = new Property();
-			property1.setName("Property 1");
-			Property property2 = new Property();
-			property1.setName("Property 2");
-			property1.setOwner(owner);
-			//property2.setOwner(owner);
-			owner.addProperty(property1);
-			owner.addProperty(property2);
-			propertyRepository.save(property1);
-			propertyRepository.save(property2);
-			//ownerRepository.save(owner);
 
 		};
 	}
