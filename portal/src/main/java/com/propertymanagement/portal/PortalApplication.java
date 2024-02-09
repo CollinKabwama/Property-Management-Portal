@@ -61,6 +61,11 @@ public class PortalApplication {
 					.build();
 			System.out.println("Admin token: " + service.registerAdmin(admin).getAccessToken());
 
+			Owner owner1 = ownerRepository.findById(1L).get();
+			Owner owner2 = ownerRepository.findById(2L).get();
+			Property property = propertyRepository.findById(1L).get();
+			//owner1.getProperties().add(property);
+
 
 		};
 	}

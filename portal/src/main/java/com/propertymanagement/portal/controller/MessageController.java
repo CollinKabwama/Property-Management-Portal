@@ -17,9 +17,6 @@ public class MessageController {
 
     @Autowired
     private MessageService messageService;
-
-
-
     @PreAuthorize("hasAuthority('CUSTOMER') || hasAuthority('OWNER')")
     @PostMapping("/send")
     public ResponseEntity<MessageDTO> createMessageAndSend(@RequestBody MessageDTO messageDTO) {

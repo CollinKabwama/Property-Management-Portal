@@ -46,6 +46,13 @@ public class PropertyController {
     }
 
     @PreAuthorize("hasAuthority('OWNER')")
+    @GetMapping("/owner/all")
+    public ResponseEntity <Set<PropertyDTO>> getAllPropertiesByOwner(){
+        Set<PropertyDTO> properties = propertyService.getAllPropertiesByOwner();
+        return ResponseEntity.ok(properties);
+    }
+
+    @PreAuthorize("hasAuthority('OWNER')")
     @PostMapping("/create")
     public ResponseEntity <PropertyDTO> createProperty(@RequestBody PropertyDTO propertyDTO){
         PropertyDTO createdProperty = propertyService.createProperty(propertyDTO);
