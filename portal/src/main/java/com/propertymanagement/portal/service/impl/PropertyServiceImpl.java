@@ -476,11 +476,29 @@ public class PropertyServiceImpl implements PropertyService {
         if (property.getStatus() == PropertyStatus.CONTINGENT){
             throw new InvalidInputException("Property is in Contingent status, Can't be cancelled");
         }
-        if (property.getOffers().size()<2){
-            property.setStatus(PropertyStatus.AVAILABLE);
+        // Return the size of the offers to a property that aren't in rejected status
+        if (property.getOffers().stream().filter(o -> !o.getOfferStatus().equals(OfferStatus.REJECTED)).count() > 2) {
+            property.setStatus(PropertyStatus.PENDING);
         }
+
+        offer.setOfferStatus(OfferStatus.REJECTED);
         propertyRepository.save(property);
     }
+
+    @Override
+    public boolean canCancelContingent(Long propertyId, Long offerId) {
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
+        Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new RecordNotFoundException("Offer not found with id: " + offerId));
+        if (property.getStatus() != PropertyStatus.CONTINGENT){
+            //Check if property already has an accepted offer
+            if (property.getOffers().stream().anyMatch(o -> o.getOfferStatus().equals(OfferStatus.ACCEPTED))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     @Override
     public Set<Property> getFavouritePropertiesByCustomer() {
