@@ -8,6 +8,7 @@ import com.propertymanagement.portal.domain.Owner;
 import com.propertymanagement.portal.dto.request.AuthenticationRequest;
 import com.propertymanagement.portal.dto.request.RegisterRequest;
 import com.propertymanagement.portal.dto.response.AuthenticationResponse;
+import com.propertymanagement.portal.email.EmailService;
 import com.propertymanagement.portal.exception.RecordAlreadyExistsException;
 import com.propertymanagement.portal.repository.CustomerRepository;
 import com.propertymanagement.portal.repository.OwnerRepository;
@@ -42,7 +43,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
+    //private final EmailService emailService;
     public AuthenticationResponse registerCustomer(RegisterRequest request) {
         // check existing user
         Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
@@ -64,7 +65,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(claims,user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-
+        //emailService.sendEmail(user.getEmail(), "Account registration", "Hello, Your account has successfully been registered");
 
         Customer customer = new Customer();
         customer.setUser(user);
@@ -96,7 +97,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(claims,user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-
+        //emailService.sendEmail(user.getEmail(), "Account registration", "Hello, Your account has successfully been registered. You will be notified as soon as it is activated");
 
         Owner owner = new Owner();
         owner.setUser(user);

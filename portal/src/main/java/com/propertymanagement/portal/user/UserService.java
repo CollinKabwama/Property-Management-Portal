@@ -1,6 +1,7 @@
 package com.propertymanagement.portal.user;
 
 import com.propertymanagement.portal.dto.request.ChangePasswordRequest;
+import com.propertymanagement.portal.email.EmailService;
 import com.propertymanagement.portal.exception.InvalidInputException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,8 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository repository;
+    //private final EmailService emailService;
+
     public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
 
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
@@ -30,6 +33,8 @@ public class UserService {
 
         // update the password
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        //emailService.sendEmail(user.getEmail(), "Password reset", "Hello, You have successfully changed your password. If you did not make this change, please contact us immediately.");
+
 
         // save the new password
         repository.save(user);
