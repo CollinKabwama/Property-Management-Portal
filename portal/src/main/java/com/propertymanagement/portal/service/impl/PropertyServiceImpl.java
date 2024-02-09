@@ -31,7 +31,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-
 @Transactional
 public class PropertyServiceImpl implements PropertyService {
     @Autowired
