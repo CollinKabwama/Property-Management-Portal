@@ -380,6 +380,11 @@ public class PropertyServiceImpl implements PropertyService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Customer customer = customerRepository.findCustomerByUserEmail(authentication.getName());
         Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
+
+        if (property.getStatus()== PropertyStatus.CONTINGENT){
+            throw new InvalidInputException("Property is in Contingent status, you cannot cancel an offer for this property");
+        }
+
         if (property.getStatus()== PropertyStatus.CONTINGENT){
             property.setStatus(PropertyStatus.AVAILABLE);
         }
@@ -397,6 +402,17 @@ public class PropertyServiceImpl implements PropertyService {
         customer.removeOffer(offer);
         property.removeOffer(offer);
         offerRepository.delete(offer);
+    }
+
+    @Override
+    public boolean canDeleteOffer(Long propertyId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = customerRepository.findCustomerByUserEmail(authentication.getName());
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
+        if (property.getStatus()== PropertyStatus.CONTINGENT){
+            return false;
+        }
+        return true;
     }
 
     @Override

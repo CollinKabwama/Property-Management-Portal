@@ -192,4 +192,10 @@ public class PropertyController {
     public Boolean makeOffer(@PathVariable Long propertyId){
         return propertyService.illegibilityToMakeOffer(propertyId);
     }
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{propertyId}/can-delete-offer")
+    public Boolean canDeleteOffer(@PathVariable Long propertyId){
+        return propertyService.canDeleteOffer(propertyId);
+    }
 }
