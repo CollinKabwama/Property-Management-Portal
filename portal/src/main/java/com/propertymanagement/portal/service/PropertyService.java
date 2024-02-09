@@ -55,6 +55,8 @@ public interface PropertyService {
 
    public Set <OfferDTO> getOffersByPropertyId(Long propertyId);
 
+   public Set <PropertyDTO> getAllPropertiesByOwner();
+
     public PropertyDTO convertToDTO(Property property);
 
     public Property convertToEntity(PropertyDTO propertyDTO);

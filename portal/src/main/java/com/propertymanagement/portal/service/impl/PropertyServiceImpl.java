@@ -237,6 +237,18 @@ public class PropertyServiceImpl implements PropertyService {
 
     }
 
+    public Set<PropertyDTO> getAllPropertiesByOwner() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
+        if (owner == null) {
+            throw new NoSuchElementException ("Owner not found or not authenticated.");
+        }
+        return owner.getProperties().stream()
+                .map(property -> modelMapper.map(property, PropertyDTO.class))
+                .collect(Collectors.toSet());
+    }
+
     public Set<OfferDTO> getOffersByPropertyId(Long propertyId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -252,6 +264,7 @@ public class PropertyServiceImpl implements PropertyService {
                 .collect(Collectors.toSet());
 
     }
+
 
     public Set <OfferDTO> getAllOffers() {
 
