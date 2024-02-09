@@ -44,17 +44,27 @@ public class OwnerServiceImpl implements OwnerService {
         return convertToDTO(owner);
     }
 
-    public Set<OwnerDTO> getAllOwners() {
+    public Set<Owner> getAllOwners() {
 
-        Set<Owner> owners = new HashSet<>(ownerRepository.findAll());
-        return owners.stream()
+        return new HashSet<>(ownerRepository.findAll());
+
+
+       /* return owners.stream()
                 .map(owner -> modelMapper.map(owner, OwnerDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toSet());*/
     }
     public OwnerDTO createOwner(OwnerDTO ownerDTO) {
         Owner owner = convertToEntity(ownerDTO);
         owner = ownerRepository.save(owner);
         return convertToDTO(owner);
+    }
+
+    public void activateOwner(Long ownerId, boolean isEnabled) {
+
+        Owner owner = ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new NoSuchElementException("Owner not found"));
+        owner.setEnabled(isEnabled);
+        ownerRepository.save(owner);
     }
     public OwnerDTO updateOwner(Long id, OwnerDTO ownerDTO) {
 
@@ -83,6 +93,7 @@ public class OwnerServiceImpl implements OwnerService {
         return modelMapper.map(updatedOwner, OwnerDTO.class);
 
     }
+
     public boolean deleteOwner(Long id) {
 
         Optional<Owner> optionalOwner = ownerRepository.findById(id);

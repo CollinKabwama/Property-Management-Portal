@@ -10,7 +10,7 @@ public interface OwnerService {
 
     OwnerDTO getOwnerById(Long id);
 
-    Set<OwnerDTO> getAllOwners();
+    Set<Owner> getAllOwners();
 
     OwnerDTO createOwner(OwnerDTO ownerDTO);
 
@@ -18,7 +18,10 @@ public interface OwnerService {
 
     boolean deleteOwner(Long id);
 
+    void activateOwner(Long OwnerId, boolean isEnabled);
+
     PropertyDTO addProperty(Long ownerId, PropertyDTO propertyDTO);
+
 
     boolean removeProperty(Long ownerIdy, Long propertyId);
 

@@ -45,7 +45,7 @@ public class Property {
     private Owner owner;
 
     @JsonManagedReference // Include offers in serialization
-    @OneToMany(mappedBy = "property", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "property", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Offer> offers = new HashSet<>();
 
     @ManyToOne (cascade = CascadeType.ALL)
