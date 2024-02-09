@@ -153,9 +153,23 @@ public class PropertyServiceImpl implements PropertyService {
         Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
         Property property = convertToEntity(propertyDTO);
         property.setOwner(owner);
+        AddressDTO addressDTO = propertyDTO.getAddress();
+        Address address = convertToAddress(addressDTO);
+        property.setAddress(address);
         property = propertyRespository.save(property);
         return convertToDTO(property);
 
+    }
+
+    private Address convertToAddress(AddressDTO addressDTO) {
+        Address address = new Address();
+        address.setCity(addressDTO.getLine1());
+        address.setLine1(addressDTO.getLine2());
+        address.setLine2(addressDTO.getCity());
+        address.setPostalCode(addressDTO.getPostalCode());
+        address.setState(addressDTO.getState());
+        address.setCountry(addressDTO.getCountry());
+        return address;
     }
 
     public PropertyDTO addProperty( PropertyDTO propertyDTO) {
@@ -194,15 +208,8 @@ public class PropertyServiceImpl implements PropertyService {
         property.setBedRooms(propertyDTO.getBedRooms());
 
         AddressDTO addressDTO = propertyDTO.getAddress();
-        Address address = new Address();
-        address.setCity(addressDTO.getLine1());
-        address.setLine1(addressDTO.getLine2());
-        address.setLine2(addressDTO.getCity());
-        address.setPostalCode(addressDTO.getPostalCode());
-        address.setState(addressDTO.getState());
-        address.setCountry(addressDTO.getCountry());
+        Address address = convertToAddress(addressDTO);
         property.setAddress(address);
-
         property.setImageUrl(propertyDTO.getImageUrl());
         property.setConstructionDate(propertyDTO.getConstructionDate());
         property.setStatus(propertyDTO.getStatus());

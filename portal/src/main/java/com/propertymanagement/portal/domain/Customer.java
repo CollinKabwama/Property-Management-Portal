@@ -27,7 +27,6 @@ public class Customer {
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    @JsonBackReference
     @JsonManagedReference
     private User user;
 

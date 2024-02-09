@@ -31,8 +31,8 @@ public class OwnerController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
-    public ResponseEntity <Set<OwnerDTO>> getAllOwners(){
-        Set<OwnerDTO> owners = ownerService.getAllOwners();
+    public ResponseEntity <Set<Owner>> getAllOwners(){
+        Set<Owner> owners = ownerService.getAllOwners();
         return ResponseEntity.ok(owners);
     }
 
@@ -101,6 +101,12 @@ public class OwnerController {
     public ResponseEntity <PropertyDTO> createProperty(@PathVariable Long ownerId, @RequestBody PropertyDTO propertyDTO){
         PropertyDTO createdProperty = ownerService.createProperty(ownerId, propertyDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProperty);
+    }
+
+    @PatchMapping("/{ownerId}/enable")
+    public ResponseEntity <Void> enableOwner(@PathVariable Long ownerId,@RequestParam boolean isEnabled){
+        ownerService.activateOwner(ownerId, isEnabled);
+        return ResponseEntity.ok().build();
     }
 
 }
