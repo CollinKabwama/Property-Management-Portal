@@ -18,7 +18,8 @@ import java.nio.file.StandardCopyOption;
 public class FileUploadController {
 
    // private final Path rootLocation = Paths.get("src/main/resources");
-    private final Path rootLocation = Paths.get("/media/collin/New Volume/Moved folders/Graduate school/WAA/PropertyManagementPortal-Front/mini-property-management-frontend-ug/src/assets/images");
+    //private final Path rootLocation = Paths.get("/media/collin/New Volume/Moved folders/Graduate school/WAA/PropertyManagementPortal-Front/mini-property-management-frontend-ug/src/assets/images");
+    private final Path rootLocation = Paths.get("../../mini-property-management-frontend-ug/src/assets/images");
 
     //private final String rootLocation = "src/main/resources";
     @PreAuthorize("hasAuthority('OWNER')")
