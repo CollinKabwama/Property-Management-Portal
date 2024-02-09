@@ -1,6 +1,7 @@
 package com.propertymanagement.portal.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.propertymanagement.portal.user.User;
 import jakarta.persistence.*;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,7 +47,7 @@ public class Property {
     private Owner owner;
 
     @JsonManagedReference // Include offers in serialization
-    @OneToMany(mappedBy = "property", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "property", fetch = FetchType.EAGER ,cascade = CascadeType.PERSIST)
     private Set<Offer> offers = new HashSet<>();
 
     @ManyToOne (cascade = CascadeType.ALL)
