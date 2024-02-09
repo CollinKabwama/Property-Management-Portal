@@ -8,7 +8,7 @@ import com.propertymanagement.portal.domain.Owner;
 import com.propertymanagement.portal.dto.request.AuthenticationRequest;
 import com.propertymanagement.portal.dto.request.RegisterRequest;
 import com.propertymanagement.portal.dto.response.AuthenticationResponse;
-import com.propertymanagement.portal.email.EmailService;
+//import com.propertymanagement.portal.email.EmailService;
 import com.propertymanagement.portal.exception.RecordAlreadyExistsException;
 import com.propertymanagement.portal.repository.CustomerRepository;
 import com.propertymanagement.portal.repository.OwnerRepository;

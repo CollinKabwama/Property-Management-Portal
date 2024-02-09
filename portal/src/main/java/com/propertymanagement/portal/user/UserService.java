@@ -1,7 +1,7 @@
 package com.propertymanagement.portal.user;
 
 import com.propertymanagement.portal.dto.request.ChangePasswordRequest;
-import com.propertymanagement.portal.email.EmailService;
+//import com.propertymanagement.portal.email.EmailService;
 import com.propertymanagement.portal.exception.InvalidInputException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
