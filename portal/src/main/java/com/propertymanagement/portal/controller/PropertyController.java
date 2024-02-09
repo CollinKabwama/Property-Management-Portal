@@ -198,4 +198,12 @@ public class PropertyController {
     public Boolean canDeleteOffer(@PathVariable Long propertyId){
         return propertyService.canDeleteOffer(propertyId);
     }
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/offers-by-owner")
+    public List<OfferDTO> offersByOwner(){
+        return propertyService.offersByOwner();
+    }
+
 }

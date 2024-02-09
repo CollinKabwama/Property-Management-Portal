@@ -512,5 +512,12 @@ public class PropertyServiceImpl implements PropertyService {
         customerRepository.save(customer);
     }
 
+    @Override
+    public List<OfferDTO> offersByOwner() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
+        return owner.getProperties().stream().flatMap(p -> p.getOffers().stream()).map(o -> modelMapper.map(o, OfferDTO.class)).collect(Collectors.toList());
+    }
+
 
 }
