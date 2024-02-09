@@ -181,7 +181,7 @@ public class PropertyController {
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/offers")
-    public Set<Offer> getOffersByCustomer(){
+    public Set<OfferDTO> getOffersByCustomer(){
         return propertyService.getOffersByCustomer();
     }
 
@@ -192,10 +192,4 @@ public class PropertyController {
     public Boolean makeOffer(@PathVariable Long propertyId){
         return propertyService.illegibilityToMakeOffer(propertyId);
     }
-
-
-
-
-
-
 }

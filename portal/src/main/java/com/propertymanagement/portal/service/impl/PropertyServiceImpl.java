@@ -465,10 +465,11 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Set<Offer> getOffersByCustomer() {
+    public Set<OfferDTO> getOffersByCustomer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Customer customer = customerRepository.findCustomerByUserEmail(authentication.getName());
-        return customer.getOffers();
+        return customer.getOffers().stream().map (offer -> modelMapper.map(offer, OfferDTO.class))
+                .collect(Collectors.toSet());
     }
 
     @Override
