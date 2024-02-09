@@ -428,12 +428,15 @@ public class PropertyServiceImpl implements PropertyService {
         if (property.getStatus()== PropertyStatus.CONTINGENT){
             throw new InvalidInputException("Property is in Contingent status, you cannot accept an offer for this property");
         }
+
         // Check if any other offer is accepted
         if (property.getOffers().stream().anyMatch(o -> o.getOfferStatus().equals(OfferStatus.ACCEPTED))) {
             throw new InvalidInputException("Another offer has already been accepted for this property");
         }
 
         offer.setOfferStatus(OfferStatus.ACCEPTED);
+        property.setStatus(PropertyStatus.PENDING);
+        offerRepository.save(offer);
         propertyRepository.save(property);
     }
     @Override
@@ -470,8 +473,8 @@ public class PropertyServiceImpl implements PropertyService {
     public void cancelContingent(Long propertyId, Long offerId) {
         Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RecordNotFoundException("Property not found with id: " + propertyId));
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new RecordNotFoundException("Offer not found with id: " + offerId));
-        if (property.getStatus()!= PropertyStatus.CONTINGENT){
-            throw new InvalidInputException("Property is not in Contingent status");
+        if (property.getStatus() == PropertyStatus.CONTINGENT){
+            throw new InvalidInputException("Property is in Contingent status, Can't be cancelled");
         }
         if (property.getOffers().size()<2){
             property.setStatus(PropertyStatus.AVAILABLE);
