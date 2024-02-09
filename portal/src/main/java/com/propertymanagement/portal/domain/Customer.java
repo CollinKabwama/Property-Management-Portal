@@ -24,10 +24,8 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    @JsonManagedReference
     private User user;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST)

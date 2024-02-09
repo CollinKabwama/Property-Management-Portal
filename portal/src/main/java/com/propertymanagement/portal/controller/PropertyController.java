@@ -205,4 +205,25 @@ public class PropertyController {
     public Boolean canDeleteOffer(@PathVariable Long propertyId){
         return propertyService.canDeleteOffer(propertyId);
     }
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/offers-by-owner")
+    public List<OfferDTO> offersByOwner(){
+        return propertyService.offersByOwner();
+    }
+
+    @PreAuthorize("hasAuthority('OWNER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{propertyId}/offers/{offerId}/can-cancel-contingent")
+    public Boolean canCancelContingent(@PathVariable Long propertyId, @PathVariable Long offerId){
+        return propertyService.canCancelContingent(propertyId, offerId);
+    }
+    @PreAuthorize("hasAuthority('OWNER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/owner-properties")
+    public Set<Property> getPropertiesBelongingToOwner(){
+        return propertyService.getPropertiesBelongingToOwner();
+    }
+
 }
