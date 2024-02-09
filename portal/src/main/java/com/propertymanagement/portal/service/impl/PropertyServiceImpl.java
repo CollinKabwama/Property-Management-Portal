@@ -498,6 +498,12 @@ public class PropertyServiceImpl implements PropertyService {
         return false;
     }
 
+    @Override
+    public Set<Property> getPropertiesBelongingToOwner() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Owner owner  = ownerRepository.findOwnerByUserEmail(authentication.getName());
+        return owner.getProperties();
+    }
 
 
     @Override

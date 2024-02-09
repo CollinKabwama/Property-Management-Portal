@@ -212,5 +212,11 @@ public class PropertyController {
     public Boolean canCancelContingent(@PathVariable Long propertyId, @PathVariable Long offerId){
         return propertyService.canCancelContingent(propertyId, offerId);
     }
+    @PreAuthorize("hasAuthority('OWNER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/owner-properties")
+    public Set<Property> getPropertiesBelongingToOwner(){
+        return propertyService.getPropertiesBelongingToOwner();
+    }
 
 }

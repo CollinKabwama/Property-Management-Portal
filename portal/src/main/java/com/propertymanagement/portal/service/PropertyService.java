@@ -72,6 +72,9 @@ public interface PropertyService {
     public boolean canDeleteOffer(Long propertyId) ;
     public List<OfferDTO> offersByOwner();
     public boolean canCancelContingent(Long propertyId, Long offerId) ;
+    public Set<Property> getPropertiesBelongingToOwner() ;
+
+
 
 
     }
